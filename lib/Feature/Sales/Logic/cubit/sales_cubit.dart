@@ -14,6 +14,7 @@ class SalesCubit extends Cubit<SalesState> {
   Future<void> fetchSales() async {
     emit(SalesLoading());
     try {
+      
       final response = await client
           .from('Sales')
           .select()
