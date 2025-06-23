@@ -1,6 +1,7 @@
 // Feature/edit_Product/editProductPage.dart
 import 'dart:io';
 import 'package:cal/Feature/Sales/Logic/cubit/sales_cubit.dart';
+import 'package:cal/Feature/Sales/widget/SaleProductButton.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -208,14 +209,17 @@ class _EditProductPageState extends State<EditProductPage> {
                         style: TextStyle(fontSize: 16),
                       ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                context.read<SalesCubit>().recordSale(
-                  product: widget.productModel,
-                  quantity: 1,
-                );
+            SizedBox(height: 30),
+            SaleProductButton(
+              productModel:
+                  widget
+                      .productModel, // استخدم widget.productModel بدلاً من ProductModel
+              onSaleSuccess: (soldQuantity) {
+                setState(() {
+                  widget.productModel.count -= soldQuantity;
+                  _countController.text = widget.productModel.count.toString();
+                });
               },
-              child: const Text('بيع منتج'),
             ),
           ],
         ),

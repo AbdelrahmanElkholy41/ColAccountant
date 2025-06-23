@@ -14,15 +14,13 @@ class SalesCubit extends Cubit<SalesState> {
   Future<void> fetchSales() async {
     emit(SalesLoading());
     try {
-      
       final response = await client
           .from('Sales')
           .select()
           .order('created_at', ascending: false);
 
-      final sales = (response as List)
-          .map((e) => SaleModel.fromMap(e))
-          .toList();
+      final sales =
+          (response as List).map((e) => SaleModel.fromMap(e)).toList();
 
       emit(SalesLoaded(sales));
     } catch (e) {
@@ -30,24 +28,29 @@ class SalesCubit extends Cubit<SalesState> {
     }
   }
 
-  Future<void> recordSale({
-    required ProductModel product,
-    required int quantity,
-  }) async {
-    try {
-      final total = product.price * quantity;
-      final profit = (product.price - product.cost) * quantity;
+Future<void> recordSale({
+  required ProductModel product,
+  required int quantity,
 
-      await client.from('Sales').insert({
-        'product_id': product.id,
-        'quantity': quantity,
-        'total_price': total,
-        'profit': profit,
-      });
+}) 
 
-      await fetchSales(); // تحديث بعد الإضافة
-    } catch (e) {
-      emit(SalesError('فشل في تسجيل عملية البيع: $e'));
-    }
+
+async {
+  emit(SalesLoading());
+  try {
+    await client.from('Sales').insert({
+      'product_id': product.id,
+      'quantity': quantity,
+      'total_price': product.price,
+      'profit': product.price-product.cost,
+    });
+
+    await fetchSales();
+  } catch (e) {
+    emit(SalesError('فشل في تسجيل عملية البيع: $e'));
+    rethrow;
   }
+}
+
+
 }
