@@ -6,7 +6,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'sales_state.dart';
 
-
 class SalesCubit extends Cubit<SalesState> {
   SalesCubit() : super(SalesInitial());
 
