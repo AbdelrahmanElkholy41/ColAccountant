@@ -11,7 +11,8 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        backgroundColor: Colors.blue,
+        child: Icon(Icons.add, color: Colors.white),
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -22,12 +23,7 @@ class MyHomePage extends StatelessWidget {
       ),
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Center(
-          child: Text(
-            'All Product',
-            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          ),
-        ),
+        title: Center(child: Text('All Product')),
       ),
       body: HomePageBody(),
     );

@@ -218,6 +218,9 @@ class _EditProductPageState extends State<EditProductPage> {
                 setState(() {
                   widget.productModel.count -= soldQuantity;
                   _countController.text = widget.productModel.count.toString();
+                  context.read<ProductCubit>().updateProduct(
+                    widget.productModel,
+                  );
                 });
               },
             ),

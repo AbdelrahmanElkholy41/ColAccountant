@@ -38,12 +38,12 @@ class _SaleProductButtonState extends State<SaleProductButton> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text("أدخل الكمية المراد بيعها"),
+              const Text("Enter the quantity to be sold"),
               const SizedBox(height: 12),
               TextField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: "الكمية",
+                  labelText: "Quantity",
                   border: OutlineInputBorder(),
                 ),
                 onChanged: (value) {
@@ -55,7 +55,7 @@ class _SaleProductButtonState extends State<SaleProductButton> {
                 onPressed: () {
                   Navigator.of(context).pop(localQuantity);
                 },
-                child: const Text("تأكيد"),
+                child: const Text("Confirm"),
               ),
               const SizedBox(height: 12),
             ],
@@ -68,7 +68,9 @@ class _SaleProductButtonState extends State<SaleProductButton> {
       if (result > widget.productModel.count) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text("لا يمكن بيع $result - الكمية المتاحة: ${widget.productModel.count}"),
+            content: Text(
+              "لا يمكن بيع $result - الكمية المتاحة: ${widget.productModel.count}",
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -124,12 +126,13 @@ class _SaleProductButtonState extends State<SaleProductButton> {
         backgroundColor: Colors.blue,
         minimumSize: const Size(double.infinity, 50),
       ),
-      child: _isLoading
-          ? const CircularProgressIndicator(color: Colors.white)
-          : const Text(
-              'بيع المنتج',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
+      child:
+          _isLoading
+              ? const CircularProgressIndicator(color: Colors.white)
+              : const Text(
+                'Sold Product',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
     );
   }
 }
