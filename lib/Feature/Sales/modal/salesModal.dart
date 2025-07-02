@@ -1,4 +1,5 @@
-// Feature/Sales/modal/salesModal.dart
+import '../../edit_Product/Modal/ProductModel.dart';
+
 class SaleModel {
   final int id;
   final int productId;
@@ -6,6 +7,7 @@ class SaleModel {
   final double totalPrice;
   final double profit;
   final DateTime createdAt;
+  final ProductModel product; // ← استبدل nameProduct
 
   SaleModel({
     required this.id,
@@ -14,9 +16,11 @@ class SaleModel {
     required this.totalPrice,
     required this.profit,
     required this.createdAt,
+    required this.product,
   });
 
   factory SaleModel.fromMap(Map<String, dynamic> map) {
+    final productMap = map['Product'] ?? {};
     return SaleModel(
       id: map['id'],
       productId: map['product_id'],
@@ -24,6 +28,7 @@ class SaleModel {
       totalPrice: (map['total_price'] as num).toDouble(),
       profit: (map['profit'] as num).toDouble(),
       createdAt: DateTime.parse(map['created_at']),
+      product: ProductModel.fromMap(productMap),
     );
   }
 
@@ -35,7 +40,7 @@ class SaleModel {
         'quantity: $quantity, '
         'totalPrice: $totalPrice, '
         'profit: $profit, '
-        'createdAt: $createdAt '
-        '}';
+        'createdAt: $createdAt, '
+        'product: ${product.name} }';
   }
 }

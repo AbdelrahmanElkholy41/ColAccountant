@@ -41,11 +41,11 @@ class SalesPage extends StatelessWidget {
           // حساب الإجماليات
           final totalProfit = sales.fold<double>(
             0.0,
-            (sum, item) => sum + item.profit,
+            (sum, item) => sum + item.profit*item.quantity,
           );
           final totalSales = sales.fold<double>(
             0.0,
-            (sum, item) => sum + item.totalPrice,
+            (sum, item) => sum + item.totalPrice*item.quantity,
           );
 
           return Column(
@@ -91,17 +91,21 @@ class SalesPage extends StatelessWidget {
                       ),
                       child: ListTile(
                         title: Text(
-                          'بيع ${sale.quantity} قطعة',
+                          'بيع ${sale.quantity}${sale.product.name} قطعة',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'الإجمالي: ${sale.totalPrice.toStringAsFixed(2)} جنيه',
+                              'سعر القطعة: ${(sale.totalPrice).toStringAsFixed(2)} جنيه',
+                            ),
+
+                            Text(
+                              'الإجمالي: ${(sale.totalPrice*sale.quantity).toStringAsFixed(2)} جنيه',
                             ),
                             Text(
-                              'الربح: ${sale.profit.toStringAsFixed(2)} جنيه',
+                              'الربح: ${(sale.profit*sale.quantity).toStringAsFixed(2)} جنيه',
                             ),
                           ],
                         ),
