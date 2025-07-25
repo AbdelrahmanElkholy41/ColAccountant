@@ -1,11 +1,13 @@
-// main.dart
 import 'package:cal/Feature/Sales/Logic/cubit/sales_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // ✅ استورد الباكيج
 
 import 'Feature/Homepage/MyHomePage.dart';
 import 'Feature/edit_Product/Logic/ProductCubit.dart';
+import 'core/routing/app_router.dart';
+import 'core/routing/routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +19,7 @@ void main() async {
   );
   print('Supabase initialized successfully');
   await Supabase.instance.client.from("Product").select('*').limit(1);
+
   runApp(const MyApp());
 }
 
@@ -27,15 +30,24 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context)=>ProductCubit()),
-        BlocProvider(create: (context)=>SalesCubit()),
+        BlocProvider(create: (context) => ProductCubit()),
+        BlocProvider(create: (context) => SalesCubit()),
+      ],
+      child: ScreenUtilInit(
+        designSize: const Size(1500, 800), // ✅ غيّر الأبعاد لو تصميمك مختلف
+        minTextAdapt: true,
+        splitScreenMode: true,
+        builder: (context, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            initialRoute: Routes.homeScreen,
+            onGenerateRoute: AppRouter().generateRoute,
 
-],
-      child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
-      )
-      );
-    
+
+          );
+        },
+      ),
+    );
   }
 }
+

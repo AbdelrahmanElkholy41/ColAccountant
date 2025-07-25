@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../edit_Product/Modal/ProductModel.dart';
@@ -119,12 +120,12 @@ class _AddProductPageState extends State<AddProductPage> {
 
         child: Column(
           children: [
-            SizedBox(height: 30,),
+            SizedBox(height: 30.h,),
             Row(
 
               children: [
                 Text('Product Name',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                SizedBox(width: 15,),
+                SizedBox(width: 15.w,),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*.36,
                   child: CustomTextField(
@@ -133,11 +134,11 @@ class _AddProductPageState extends State<AddProductPage> {
 
                   ),
                 ),
-                SizedBox(width: 50,),
+                SizedBox(width: 50.w,),
                 Text('Product Price',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                SizedBox(width: 15,),
+                SizedBox(width: 15.w,),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width*.36,
+                  width: MediaQuery.of(context).size.width.w*.36,
                   child: CustomTextField(
                     title: 'Product Price',
                     controller: _priceController,
@@ -153,20 +154,20 @@ class _AddProductPageState extends State<AddProductPage> {
 
               children: [
                 Text('Product Count',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                SizedBox(width: 15,),
+                SizedBox(width: 15.w,),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width*.36,
+                  width: MediaQuery.of(context).size.width.w*.36,
                   child: CustomTextField(
                     title: 'Product Count',
                     controller: _countController,
 
                   ),
                 ),
-                SizedBox(width: 50,),
+                SizedBox(width: 50.w,),
                 Text('Product Cost',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                SizedBox(width: 15,),
+                SizedBox(width: 15.w,),
                 SizedBox(
-                  width: MediaQuery.of(context).size.width*.36,
+                  width: MediaQuery.of(context).size.width.w*.36,
                   child: CustomTextField(
                     title: 'Product Cost',
                     controller: _costController,
@@ -176,13 +177,13 @@ class _AddProductPageState extends State<AddProductPage> {
 
               ],
             ),
-            const SizedBox(height: 50),
+             SizedBox(height: 50.h),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Product Description',style: TextStyle(fontSize: 14,fontWeight: FontWeight.bold),),
-                SizedBox(width: 15,),
+                SizedBox(width: 15.w,),
                 SizedBox(
                   width: MediaQuery.of(context).size.width*.36,
                   child: CustomTextField(
@@ -193,13 +194,13 @@ class _AddProductPageState extends State<AddProductPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 50),
+             SizedBox(height: 50.h),
             GestureDetector(
               onTap: _isUploading ? null : _pickImage,
               behavior: HitTestBehavior.opaque,
               child: Container(
                 width: double.infinity,
-                height: MediaQuery.of(context).size.height*.15,
+                height: MediaQuery.of(context).size.height.h*.15,
                 decoration: BoxDecoration(
                   color: Colors.grey[200],
                   border: Border.all(color: Colors.black26),
@@ -216,7 +217,7 @@ class _AddProductPageState extends State<AddProductPage> {
                     Icon(Icons.image,
                         size: 50,
                         color: _isUploading ? Colors.grey : Colors.black45),
-                    const SizedBox(height: 8),
+                     SizedBox(height: 8.h),
                     Text(
                       _isUploading ? 'Uploading...' : 'Tap to select image',
                       style: TextStyle(
