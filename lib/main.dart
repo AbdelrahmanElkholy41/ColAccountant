@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart'; // ✅ استورد
 
 import 'Feature/Homepage/MyHomePage.dart';
 import 'Feature/edit_Product/Logic/ProductCubit.dart';
+import 'Feature/login/ui/login_screen.dart';
 import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
 
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
         builder: (context, child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            initialRoute: Routes.homeScreen,
+            initialRoute: Routes.loginScreen,
             onGenerateRoute: AppRouter().generateRoute,
 
 
