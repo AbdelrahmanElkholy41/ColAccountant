@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../Feature/Homepage/MyHomePage.dart';
+import '../../Feature/dashboard/ui/dashboard_screen.dart';
 import '../../Feature/login/ui/login_screen.dart';
 class AppRouter {
   Route generateRoute(RouteSettings settings) {
@@ -18,6 +19,10 @@ class AppRouter {
       case Routes.loginScreen:
         return MaterialPageRoute(
           builder: (_) => const LoginScreen(),
+        );
+        case Routes.dashboardScreen:
+        return MaterialPageRoute(
+          builder: (_) => const DashboardScreen(),
         );
 
       case Routes.homeScreen:
