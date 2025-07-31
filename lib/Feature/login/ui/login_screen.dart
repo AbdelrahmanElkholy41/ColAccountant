@@ -66,7 +66,7 @@ class LoginScreen extends StatelessWidget {
                           buttonText: 'Sign in as admin',
                           textStyle: TextStyles.font15DarkBlueMedium,
                           onPressed: () {
-                            context.pushNamed(Routes.salesScreen);
+                            context.pushNamed(Routes.dashboardScreen);
                           },
                         ),
                         verticalSpace(50.h),

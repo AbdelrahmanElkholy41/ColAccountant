@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SalesCubit()),
       ],
       child: ScreenUtilInit(
-        designSize: const Size(1500, 800), // ✅ غيّر الأبعاد لو تصميمك مختلف
+        designSize: const Size(1500, 800),
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {

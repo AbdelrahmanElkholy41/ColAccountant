@@ -1,8 +1,10 @@
 // Feature/Homepage/widght/homePageBody.dart
 import 'package:cal/Feature/Add_Product/AddProductPage.dart';
 import 'package:cal/Feature/Sales/screens/salesPage.dart';
+import 'package:cal/core/helpers/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../edit_Product/Logic/ProductCubit.dart';
 import '../../edit_Product/Logic/ProductState.dart';
 import 'customCard.dart';
@@ -35,41 +37,7 @@ class _HomePageBodyState extends State<HomePageBody> {
 
           return Column(
             children: [
-              SizedBox(
-                height: 65,
-                child: Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        TextButton(
-                          child: const Text(
-                            "Sales",
-                            style: TextStyle(fontSize: 16, color: Colors.blue),
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => SalesPage(),
-                              ),
-                            );
-                          },
-                        ),
-                        const Text(
-                          "Accountant",
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
-                        ),
-                        const Text(
-                          "Accountant",
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
+              verticalSpace( 30.h),
               Expanded(
                 child: GridView.builder(
                   itemCount: products.length,

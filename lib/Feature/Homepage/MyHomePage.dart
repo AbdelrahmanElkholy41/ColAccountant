@@ -10,17 +10,6 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue,
-        child: Icon(Icons.add, color: Colors.white),
-        onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => const AddProductPage(),
-            ), // ✅ استخدم const
-          );
-        },
-      ),
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Center(child: Text('All Product')),

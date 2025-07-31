@@ -2,6 +2,11 @@
 class Assets {
   Assets._();
 
+  static const String addProductAddProductPage = 'lib/Feature/Add_Product/AddProductPage.dart';
+  static const String cubitSalesCubit = 'lib/Feature/Sales/Logic/cubit/sales_cubit.dart';
+  static const String cubitSalesState = 'lib/Feature/Sales/Logic/cubit/sales_state.dart';
+  static const String editProductEditProductPage = 'lib/Feature/edit_Product/editProductPage.dart';
+  static const String editProductWidgetCustomTextField = 'lib/Feature/edit_Product/widget/CustomTextField.dart';
   static const String fontsCairoBlack = 'assets/fonts/Cairo-Black.ttf';
   static const String fontsCairoBold = 'assets/fonts/Cairo-Bold.ttf';
   static const String fontsCairoExtraBold = 'assets/fonts/Cairo-ExtraBold.ttf';
@@ -10,10 +15,37 @@ class Assets {
   static const String fontsCairoMedium = 'assets/fonts/Cairo-Medium.ttf';
   static const String fontsCairoRegular = 'assets/fonts/Cairo-Regular.ttf';
   static const String fontsCairoSemiBold = 'assets/fonts/Cairo-SemiBold.ttf';
+  static const String generatedAssets = 'lib/generated/assets.dart';
+  static const String helpersAppRegex = 'lib/core/helpers/app_regex.dart';
+  static const String helpersExtensions = 'lib/core/helpers/extensions.dart';
+  static const String helpersSpacing = 'lib/core/helpers/spacing.dart';
+  static const String homepageMyHomePage = 'lib/Feature/Homepage/MyHomePage.dart';
   static const String images1 = 'assets/images/1.jpg';
   static const String images2 = 'assets/images/2.jpg';
   static const String images3 = 'assets/images/3.jpg';
   static const String images4 = 'assets/images/4.jpg';
+  static const String imagesLogo = 'assets/images/logo.jpg';
   static const String imagesLogo1 = 'assets/images/logo1.png';
+  static const String imagesSalse = 'assets/images/salse.png';
+  static const String libMain = 'lib/main.dart';
+  static const String logicProductCubit = 'lib/Feature/edit_Product/Logic/ProductCubit.dart';
+  static const String logicProductState = 'lib/Feature/edit_Product/Logic/ProductState.dart';
+  static const String modalProductModel = 'lib/Feature/edit_Product/Modal/ProductModel.dart';
+  static const String modalSalesModal = 'lib/Feature/Sales/modal/salesModal.dart';
+  static const String routingAppRouter = 'lib/core/routing/app_router.dart';
+  static const String routingRoutes = 'lib/core/routing/routes.dart';
+  static const String screensSalesPage = 'lib/Feature/Sales/screens/salesPage.dart';
+  static const String themingColors = 'lib/core/theming/colors.dart';
+  static const String themingFontWidghtHelper = 'lib/core/theming/font_widght_helper.dart';
+  static const String themingStyles = 'lib/core/theming/styles.dart';
+  static const String uiDashboardScreen = 'lib/Feature/dashboard/ui/dashboard_screen.dart';
+  static const String uiLoginScreen = 'lib/Feature/login/ui/login_screen.dart';
+  static const String widgetCustomTextField = 'lib/Feature/Add_Product/widget/CustomTextField.dart';
+  static const String widgetEmailAndPassword = 'lib/Feature/login/ui/widget/email_and_password.dart';
+  static const String widgetSaleProductButton = 'lib/Feature/Sales/widget/SaleProductButton.dart';
+  static const String widgetsCoutomTextField = 'lib/core/widgets/coutom_text_field.dart';
+  static const String widgetsCustomMainButton = 'lib/core/widgets/custom_main_button.dart';
+  static const String widghtCustomCard = 'lib/Feature/Homepage/widght/customCard.dart';
+  static const String widghtHomePageBody = 'lib/Feature/Homepage/widght/homePageBody.dart';
 
 }
