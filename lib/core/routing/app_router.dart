@@ -1,4 +1,6 @@
+// core/routing/app_router.dart
 import 'package:cal/Feature/Sales/screens/salesPage.dart';
+import 'package:cal/Feature/login/Logic/cubit/cubit/login_cubit.dart';
 import 'package:cal/core/routing/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,24 +17,24 @@ class AppRouter {
 
     switch (settings.name) {
       case Routes.salesScreen:
-        return MaterialPageRoute(
-          builder: (_) => const SalesPage(),
-        );
+        return MaterialPageRoute(builder: (_) => const SalesPage());
       case Routes.addProductScreen:
-        return MaterialPageRoute(
-          builder: (_) => const AddProductPage(),
-        );
+        return MaterialPageRoute(builder: (_) => const AddProductPage());
       case Routes.loginScreen:
         return MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
+          builder:
+              (_) => BlocProvider(
+                create: (context) => LoginCubit(),
+                child: const LoginScreen(),
+              ),
         );
       case Routes.dashboardScreen:
         return MaterialPageRoute(
-          builder: (_) =>
-              BlocProvider(
+          builder:
+              (_) => BlocProvider(
                 create: (context) => ProductCubit(),
-                child: const DashboardScreen()),
-
+                child: const DashboardScreen(),
+              ),
         );
 
       case Routes.homeScreen:
@@ -40,8 +42,8 @@ class AppRouter {
 
       default:
         return MaterialPageRoute(
-          builder: (_) =>
-              Scaffold(
+          builder:
+              (_) => Scaffold(
                 body: Center(
                   child: Text('No route defined for ${settings.name}'),
                 ),

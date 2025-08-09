@@ -1,8 +1,12 @@
+// Feature/login/ui/login_screen.dart
+import 'package:cal/Feature/login/Logic/cubit/cubit/login_cubit.dart';
+import 'package:cal/Feature/login/Logic/cubit/cubit/login_state.dart';
 import 'package:cal/Feature/login/ui/widget/email_and_password.dart';
 import 'package:cal/core/helpers/extensions.dart';
 import 'package:cal/core/helpers/spacing.dart';
 import 'package:cal/core/widgets/coutom_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../core/routing/routes.dart';
@@ -37,7 +41,7 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              verticalSpace(50.h),
+              verticalSpace(20.h),
               SizedBox(
                 width: 400.w,
                 height: 600.h,
@@ -52,9 +56,7 @@ class LoginScreen extends StatelessWidget {
                         Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
-                            onPressed: () {
-
-                            },
+                            onPressed: () {},
                             child: Text(
                               'Forgot password?',
                               style: TextStyles.font13BlueRegular,
@@ -62,24 +64,43 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
                         verticalSpace(50.h),
-                        AppTextButton(
-                          buttonText: 'Sign in as admin',
-                          textStyle: TextStyles.font15DarkBlueMedium,
-                          onPressed: () {
-                            context.pushNamed(Routes.dashboardScreen);
+                        BlocConsumer<LoginCubit, LoginState>(
+                          listener: (context, state) {
+                            if (state is LoginFailure) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text(state.errorMessage)),
+                              );
+
+                              Center(child: CircularProgressIndicator());
+                            } else if (state is LoginSuccess) {
+                              context.pushNamed(Routes.dashboardScreen);
+                            }
+                          },
+                          builder: (context, state) {
+                            if (state is LoginLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return AppTextButton(
+                              buttonText: 'Sign in as admin',
+                              textStyle: TextStyles.font15DarkBlueMedium,
+                              onPressed: () {
+                                final cubit = context.read<LoginCubit>();
+                                cubit.loginWithEmail();
+                              },
+                            );
                           },
                         ),
                         verticalSpace(50.h),
 
-                            AppTextButton(
-                              buttonText: 'Seller',
-                              textStyle: TextStyles.font15DarkBlueMedium,
-                              onPressed: () {
-                                context.pushNamed(Routes.homeScreen);
-                              },
-                            ),
-
-
+                        AppTextButton(
+                          buttonText: 'Seller',
+                          textStyle: TextStyles.font15DarkBlueMedium,
+                          onPressed: () {
+                            context.pushNamed(Routes.homeScreen);
+                          },
+                        ),
                       ],
                     ),
                   ),

@@ -1,3 +1,5 @@
+// Feature/dashboard/ui/dashboard_screen.dart
+import 'package:cal/Feature/login/Logic/cubit/cubit/login_cubit.dart';
 import 'package:cal/core/helpers/extensions.dart';
 import 'package:cal/core/helpers/spacing.dart';
 import 'package:cal/core/theming/colors.dart';
@@ -59,7 +61,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               leading: Icon(Icons.logout, color: ColorsManager.darkBlue),
               title: Text('Logout', style: TextStyles.font18DarkBlueSemiBold),
-              onTap: () => context.pushNamed(Routes.loginScreen),
+              onTap: () {
+              
+                context.pushNamed(Routes.loginScreen);}
             ),
           ],
         ),
