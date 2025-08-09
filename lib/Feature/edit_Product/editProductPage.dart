@@ -212,8 +212,7 @@ class _EditProductPageState extends State<EditProductPage> {
             SizedBox(height: 30),
             SaleProductButton(
               productModel:
-                  widget
-                      .productModel, // استخدم widget.productModel بدلاً من ProductModel
+                  widget.productModel, // استخدم widget.productModel بدلاً من ProductModel
               onSaleSuccess: (soldQuantity) {
                 setState(() {
                   widget.productModel.count -= soldQuantity;

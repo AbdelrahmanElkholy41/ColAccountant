@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "ColAccountant",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ColAccountant (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ColAccountant (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "my_windows_app",
+            "cwd": "my_windows_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "my_windows_app (profile mode)",
+            "cwd": "my_windows_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "my_windows_app (release mode)",
+            "cwd": "my_windows_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

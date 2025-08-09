@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SaleProductButton extends StatefulWidget {
-  final ProductModel productModel;
+  final ProductModel? productModel;
   final Function(int)? onSaleSuccess;
 
   const SaleProductButton({
-    super.key,
-    required this.productModel,
+    this.productModel,
     this.onSaleSuccess,
+    super.key,
   });
 
   @override
@@ -22,6 +22,16 @@ class _SaleProductButtonState extends State<SaleProductButton> {
   bool _isLoading = false;
 
   Future<void> _handleSale() async {
+    if (widget.productModel == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("المنتج غير محدد"),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
     int localQuantity = 1;
 
     final result = await showModalBottomSheet<int>(
@@ -65,11 +75,11 @@ class _SaleProductButtonState extends State<SaleProductButton> {
     );
 
     if (result != null && result > 0) {
-      if (result > widget.productModel.count) {
+      if (result > widget.productModel!.count) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              "لا يمكن بيع $result - الكمية المتاحة: ${widget.productModel.count}",
+              "لا يمكن بيع $result - الكمية المتاحة: ${widget.productModel!.count}",
             ),
             backgroundColor: Colors.red,
           ),
@@ -81,13 +91,11 @@ class _SaleProductButtonState extends State<SaleProductButton> {
 
       try {
         await context.read<SalesCubit>().recordSale(
-          product: widget.productModel,
+          product: widget.productModel!,
           quantity: result,
         );
 
-        if (widget.onSaleSuccess != null) {
-          widget.onSaleSuccess!(result);
-        }
+        widget.onSaleSuccess?.call(result);
 
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -110,7 +118,7 @@ class _SaleProductButtonState extends State<SaleProductButton> {
       }
     } else if (result != null && result <= 0) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("الكمية يجب أن تكون أكبر من الصفر"),
           backgroundColor: Colors.orange,
         ),
@@ -126,13 +134,12 @@ class _SaleProductButtonState extends State<SaleProductButton> {
         backgroundColor: Colors.blue,
         minimumSize: const Size(double.infinity, 50),
       ),
-      child:
-          _isLoading
-              ? const CircularProgressIndicator(color: Colors.white)
-              : const Text(
-                'Sold Product',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
+      child: _isLoading
+          ? const CircularProgressIndicator(color: Colors.white)
+          : const Text(
+        'Sold Product',
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
