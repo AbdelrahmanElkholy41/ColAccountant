@@ -1,17 +1,17 @@
 // Feature/Homepage/widght/homePageBody.dart
 import 'package:cal/Feature/Add_Product/AddProductPage.dart';
-import 'package:cal/Feature/Sales/screens/salesPage.dart';
 import 'package:cal/core/helpers/spacing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../Sales/widget/SaleProductButton.dart';
 import '../../edit_Product/Logic/ProductCubit.dart';
 import '../../edit_Product/Logic/ProductState.dart';
 import 'customCard.dart';
 
 class HomePageBody extends StatefulWidget {
-  const HomePageBody({super.key});
+  const HomePageBody({super.key, required this.isAdmin});
+
+  final bool isAdmin;
 
   @override
   State<HomePageBody> createState() => _HomePageBodyState();
@@ -21,7 +21,6 @@ class _HomePageBodyState extends State<HomePageBody> {
   @override
   void initState() {
     super.initState();
-
     context.read<ProductCubit>().fetchProducts();
   }
 
@@ -52,7 +51,10 @@ class _HomePageBodyState extends State<HomePageBody> {
                   itemBuilder: (BuildContext context, int index) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: CustomCard(productModel: products[index]),
+                      child: CustomCard(
+                        productModel: products[index],
+                        isAdmin: widget.isAdmin, // هنا تمرير القيمة
+                      ),
                     );
                   },
                 ),
@@ -62,7 +64,6 @@ class _HomePageBodyState extends State<HomePageBody> {
         } else if (state is ProductError) {
           return Center(child: Text('❌ ${state.message}'));
         } else {
-          // return const Center(child: Text('Do not have any product please can add product'));
           return Center(
             child: TextButton(
               onPressed: () {
@@ -70,8 +71,8 @@ class _HomePageBodyState extends State<HomePageBody> {
                   MaterialPageRoute(builder: (context) => AddProductPage()),
                 );
               },
-              child: Text(
-                'Do not have any product please click her to  add product',
+              child: const Text(
+                'Do not have any product please click her to add product',
               ),
             ),
           );

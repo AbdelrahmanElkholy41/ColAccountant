@@ -2,19 +2,19 @@
 import 'package:cal/Feature/Homepage/widght/homePageBody.dart';
 import 'package:flutter/material.dart';
 
-import '../Add_Product/AddProductPage.dart';
-
 class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({super.key, required this.isAdmin});
+
+  final bool isAdmin;  // خزن القيمة هنا
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Center(child: Text('All Product')),
+        title: const Center(child: Text('All Product')),
       ),
-      body: HomePageBody(),
+      body: HomePageBody(isAdmin: isAdmin),  // مرر القيمة هنا
     );
   }
 }

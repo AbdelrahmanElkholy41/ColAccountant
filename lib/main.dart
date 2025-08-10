@@ -1,12 +1,11 @@
+// main.dart
 import 'package:cal/Feature/Sales/Logic/cubit/sales_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart'; // ✅ استورد الباكيج
 
-import 'Feature/Homepage/MyHomePage.dart';
 import 'Feature/edit_Product/Logic/ProductCubit.dart';
-import 'Feature/login/ui/login_screen.dart';
 import 'core/routing/app_router.dart';
 import 'core/routing/routes.dart';
 

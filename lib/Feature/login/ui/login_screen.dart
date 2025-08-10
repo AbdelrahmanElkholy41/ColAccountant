@@ -4,7 +4,6 @@ import 'package:cal/Feature/login/Logic/cubit/cubit/login_state.dart';
 import 'package:cal/Feature/login/ui/widget/email_and_password.dart';
 import 'package:cal/core/helpers/extensions.dart';
 import 'package:cal/core/helpers/spacing.dart';
-import 'package:cal/core/widgets/coutom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,7 +13,9 @@ import '../../../core/theming/styles.dart';
 import '../../../core/widgets/custom_main_button.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key, this.isAdmin = false});
+
+  final bool isAdmin;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,6 @@ class LoginScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -70,10 +70,13 @@ class LoginScreen extends StatelessWidget {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text(state.errorMessage)),
                               );
-
                               Center(child: CircularProgressIndicator());
                             } else if (state is LoginSuccess) {
-                              context.pushNamed(Routes.dashboardScreen);
+                              // لو نجاح تسجيل دخول أدمن، نفترض أنك تمرر isAdmin = true
+                              context.pushNamed(
+                                Routes.dashboardScreen,
+                                arguments: {'isAdmin': true},
+                              );
                             }
                           },
                           builder: (context, state) {
@@ -93,12 +96,14 @@ class LoginScreen extends StatelessWidget {
                           },
                         ),
                         verticalSpace(50.h),
-
                         AppTextButton(
                           buttonText: 'Seller',
                           textStyle: TextStyles.font15DarkBlueMedium,
                           onPressed: () {
-                            context.pushNamed(Routes.homeScreen);
+                            context.pushNamed(
+                              Routes.homeScreen,
+                              arguments: {'isAdmin': false}, // هنا نمرر false للبائع
+                            );
                           },
                         ),
                       ],

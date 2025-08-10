@@ -1,5 +1,4 @@
 // Feature/dashboard/ui/dashboard_screen.dart
-import 'package:cal/Feature/login/Logic/cubit/cubit/login_cubit.dart';
 import 'package:cal/core/helpers/extensions.dart';
 import 'package:cal/core/helpers/spacing.dart';
 import 'package:cal/core/theming/colors.dart';
@@ -13,7 +12,8 @@ import '../../edit_Product/Logic/ProductCubit.dart';
 import '../../edit_Product/Logic/ProductState.dart';
 
 class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+  const DashboardScreen({super.key, required this.isAdmin});
+  final bool isAdmin ; // افتراضياً غير مسؤول
 
   @override
   State<DashboardScreen> createState() => _DashboardScreenState();
@@ -46,7 +46,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               leading: Icon(Icons.home, color: ColorsManager.darkBlue),
               title: Text('Home', style: TextStyles.font18DarkBlueSemiBold),
-              onTap: () => context.pushNamed(Routes.homeScreen),
+              onTap: () => context.pushNamed(Routes.homeScreen,arguments: {'isAdmin': widget.isAdmin}),
             ),
             ListTile(
               leading: Icon(Icons.point_of_sale_sharp, color: ColorsManager.darkBlue),
