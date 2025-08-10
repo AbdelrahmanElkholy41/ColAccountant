@@ -52,7 +52,7 @@ class LoginCubit extends Cubit<LoginState> {
   Future<void> logout() async {
   try {
     await Supabase.instance.client.auth.signOut();
-    emit(LoginInitial()); // أو أي حالة تعبر عن تسجيل الخروج
+    emit(LoginInitial()); 
   } catch (e) {
     emit(LoginFailure('Logout failed: ${e.toString()}'));
   }

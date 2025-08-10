@@ -1,6 +1,6 @@
 // Feature/edit_Product/editProductPage.dart
+
 import 'dart:io';
-import 'package:cal/Feature/Sales/Logic/cubit/sales_cubit.dart';
 import 'package:cal/Feature/Sales/widget/SaleProductButton.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
@@ -10,11 +10,17 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../edit_Product/Modal/ProductModel.dart';
 import '../edit_Product/Logic/ProductCubit.dart';
 import '../edit_Product/widget/CustomTextField.dart';
-import 'Logic/ProductState.dart';
+import 'package:cal/Feature/edit_Product/Logic/ProductState.dart';
 
 class EditProductPage extends StatefulWidget {
-  const EditProductPage({super.key, required this.productModel});
+  const EditProductPage({
+    super.key,
+    required this.productModel,
+    required this.isAdmin,  // هنا حقل isAdmin
+  });
+
   final ProductModel productModel;
+  final bool isAdmin;
 
   @override
   State<EditProductPage> createState() => _EditProductPageState();
@@ -123,109 +129,114 @@ class _EditProductPageState extends State<EditProductPage> {
         backgroundColor: Colors.blue,
         title: const Text('Edit Product'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              context.read<ProductCubit>().deleteProduct(
-                widget.productModel.id,
-              );
-            },
-            icon: const Icon(Icons.delete, color: Colors.black87),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          children: [
-            SizedBox(height: 30),
-            TwoCustomTextField(
-              context: context,
-              nameController: _nameController,
-              priceController: _priceController,
-            ),
-            const SizedBox(height: 50),
-            TWoCustomText(
-              context: context,
-              countController: _countController,
-              costController: _costController,
-            ),
-
-            const SizedBox(height: 50),
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Product Description',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+        actions: widget.isAdmin
+            ? [
+                IconButton(
+                  onPressed: () {
+                    context.read<ProductCubit>().deleteProduct(widget.productModel.id);
+                  },
+                  icon: const Icon(Icons.delete, color: Colors.black87),
                 ),
-                SizedBox(width: 15),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * .36,
-                  child: CustomTextField(
-                    title: 'Product Description',
-                    controller: _descController,
+              ]
+            : null,
+      ),
+      body: widget.isAdmin
+          ? SingleChildScrollView(
+              padding: const EdgeInsets.all(30),
+              child: Column(
+                children: [
+                  const SizedBox(height: 30),
+                  TwoCustomTextField(
+                    context: context,
+                    nameController: _nameController,
+                    priceController: _priceController,
                   ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 50),
-            GestureDetector(
-              onTap: _isLoading ? null : _pickImage,
-              child: Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * .2,
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.black26),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child:
-                    _selectedImage != null
-                        ? ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.file(_selectedImage!, fit: BoxFit.cover),
-                        )
-                        : Image.network(
-                          widget.productModel.imageUrl,
-                          fit: BoxFit.cover,
-                        ),
-              ),
-            ),
-            const SizedBox(height: 50),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _submit,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                minimumSize: const Size(double.infinity, 50),
-              ),
-              child:
-                  _isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                        'Save Changes',
-                        style: TextStyle(fontSize: 16),
+                  const SizedBox(height: 50),
+                  TWoCustomText(
+                    context: context,
+                    countController: _countController,
+                    costController: _costController,
+                  ),
+                  const SizedBox(height: 50),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Product Description',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
+                      const SizedBox(width: 15),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .36,
+                        child: CustomTextField(
+                          title: 'Product Description',
+                          controller: _descController,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 50),
+                  GestureDetector(
+                    onTap: _isLoading ? null : _pickImage,
+                    child: Container(
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height * .2,
+                      decoration: BoxDecoration(
+                        color: Colors.grey[200],
+                        border: Border.all(color: Colors.black26),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: _selectedImage != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.file(_selectedImage!, fit: BoxFit.cover),
+                            )
+                          : Image.network(
+                              widget.productModel.imageUrl,
+                              fit: BoxFit.cover,
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 50),
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _submit,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue,
+                      minimumSize: const Size(double.infinity, 50),
+                    ),
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text(
+                            'Save Changes',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                  ),
+                  const SizedBox(height: 30),
+                  SaleProductButton(
+                    productModel: widget.productModel,
+                    onSaleSuccess: (soldQuantity) {
+                      setState(() {
+                        widget.productModel.count -= soldQuantity;
+                        _countController.text = widget.productModel.count.toString();
+                        context.read<ProductCubit>().updateProduct(widget.productModel);
+                      });
+                    },
+                  ),
+                ],
+              ),
+            )
+          : Center(
+              child: SaleProductButton(
+                productModel: widget.productModel,
+                onSaleSuccess: (soldQuantity) {
+                  setState(() {
+                    widget.productModel.count -= soldQuantity;
+                    _countController.text = widget.productModel.count.toString();
+                    context.read<ProductCubit>().updateProduct(widget.productModel);
+                  });
+                },
+              ),
             ),
-            SizedBox(height: 30),
-            SaleProductButton(
-              productModel:
-                  widget.productModel, // استخدم widget.productModel بدلاً من ProductModel
-              onSaleSuccess: (soldQuantity) {
-                setState(() {
-                  widget.productModel.count -= soldQuantity;
-                  _countController.text = widget.productModel.count.toString();
-                  context.read<ProductCubit>().updateProduct(
-                    widget.productModel,
-                  );
-                });
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -254,6 +265,7 @@ class _EditProductPageState extends State<EditProductPage> {
     _priceController.dispose();
     _countController.dispose();
     _descController.dispose();
+    _costController.dispose();
     super.dispose();
   }
 }
@@ -264,8 +276,8 @@ class TWoCustomText extends StatelessWidget {
     required this.context,
     required TextEditingController countController,
     required TextEditingController costController,
-  }) : _countController = countController,
-       _costController = costController;
+  })  : _countController = countController,
+        _costController = costController;
 
   final BuildContext context;
   final TextEditingController _countController;
@@ -275,11 +287,11 @@ class TWoCustomText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
+        const Text(
           'Product Count',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         SizedBox(
           width: MediaQuery.of(context).size.width * .36,
           child: CustomTextField(
@@ -287,12 +299,12 @@ class TWoCustomText extends StatelessWidget {
             controller: _countController,
           ),
         ),
-        SizedBox(width: 50),
-        Text(
+        const SizedBox(width: 50),
+        const Text(
           'Product Cost',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         SizedBox(
           width: MediaQuery.of(context).size.width * .36,
           child: CustomTextField(title: 'Cost', controller: _costController),
@@ -308,8 +320,8 @@ class TwoCustomTextField extends StatelessWidget {
     required this.context,
     required TextEditingController nameController,
     required TextEditingController priceController,
-  }) : _nameController = nameController,
-       _priceController = priceController;
+  })  : _nameController = nameController,
+        _priceController = priceController;
 
   final BuildContext context;
   final TextEditingController _nameController;
@@ -319,11 +331,11 @@ class TwoCustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
+        const Text(
           'Product Name',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         SizedBox(
           width: MediaQuery.of(context).size.width * .36,
           child: CustomTextField(
@@ -331,12 +343,12 @@ class TwoCustomTextField extends StatelessWidget {
             controller: _nameController,
           ),
         ),
-        SizedBox(width: 50),
-        Text(
+        const SizedBox(width: 50),
+        const Text(
           'Product Price',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         SizedBox(
           width: MediaQuery.of(context).size.width * .36,
           child: CustomTextField(
