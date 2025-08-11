@@ -1,3 +1,4 @@
+// Feature/Sales/screens/salesPage.dart
 import 'package:cal/Feature/Sales/modal/salesModal.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -13,15 +14,18 @@ class SalesPage extends StatefulWidget {
 class _SalesPageState extends State<SalesPage> {
   double extraProfit = 0;
 
+  // جلب المبيعات الغير مترجعة
   Future<List<SaleModel>> fetchSales() async {
     final data = await Supabase.instance.client
         .from('Sales')
         .select('*, Product(*)')
+        .eq('is_returned', false) // استبعاد المترجع
         .order('created_at', ascending: false);
 
     return (data as List).map((item) => SaleModel.fromMap(item)).toList();
   }
 
+  // إضافة ربح يدوي
   void _showAddProfitBottomSheet() {
     double? enteredProfit;
 
@@ -46,7 +50,6 @@ class _SalesPageState extends State<SalesPage> {
               const SizedBox(height: 12),
               CustomTextField(
                 title: 'قيمة الربح',
-            
                 onChange: (value) {
                   enteredProfit = double.tryParse(value);
                 },
@@ -61,7 +64,9 @@ class _SalesPageState extends State<SalesPage> {
                     Navigator.pop(context);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("تم إضافة ${enteredProfit!.toStringAsFixed(2)} جنيه للربح"),
+                        content: Text(
+                          "تم إضافة ${enteredProfit!.toStringAsFixed(2)} جنيه للربح",
+                        ),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -81,6 +86,54 @@ class _SalesPageState extends State<SalesPage> {
         );
       },
     );
+  }
+
+  // دالة إرجاع عملية بيع
+  Future<void> _returnSale(SaleModel sale) async {
+    final confirm = await showDialog(
+      context: context,
+      builder:
+          (_) => AlertDialog(
+            title: const Text("تأكيد الإرجاع"),
+            content: const Text("هل أنت متأكد أنك تريد إرجاع هذه العملية؟"),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text("إلغاء"),
+              ),
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text("تأكيد"),
+              ),
+            ],
+          ),
+    );
+
+    if (confirm == true) {
+      try {
+        // تحديث العملية كمترجع
+        await Supabase.instance.client
+            .from('Sales')
+            .update({'is_returned': true})
+            .eq('id', sale.id);
+
+        // تحديث كمية المنتج في المخزون
+        await Supabase.instance.client
+            .from('Product')
+            .update({'Count': sale.product.count + sale.quantity})
+            .eq('id', sale.product.id);
+
+        setState(() {}); // إعادة تحميل البيانات
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text("تم إرجاع العملية بنجاح")));
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("حدث خطأ أثناء الإرجاع: $e")));
+      }
+    }
   }
 
   @override
@@ -111,15 +164,16 @@ class _SalesPageState extends State<SalesPage> {
             return const Center(child: Text('لا توجد مبيعات حتى الآن'));
           }
 
-          final totalProfit = sales.fold<double>(
-            0.0,
+          final totalProfit =
+              sales.fold<double>(
+                0.0,
                 (sum, item) => sum + item.profit * item.quantity,
-          ) +
+              ) +
               extraProfit;
 
           final totalSales = sales.fold<double>(
             0.0,
-                (sum, item) => sum + item.totalPrice * item.quantity,
+            (sum, item) => sum + item.totalPrice * item.quantity,
           );
 
           return Column(
@@ -165,7 +219,7 @@ class _SalesPageState extends State<SalesPage> {
                       ),
                       child: ListTile(
                         title: Text(
-                          'بيع ${sale.quantity}${sale.product.name} قطعة',
+                          'بيع ${sale.quantity} ${sale.product.name} قطعة',
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Column(
@@ -182,9 +236,19 @@ class _SalesPageState extends State<SalesPage> {
                             ),
                           ],
                         ),
-                        trailing: Text(
-                          '${sale.createdAt.day}/${sale.createdAt.month} - ${sale.createdAt.hour}:${sale.createdAt.minute.toString().padLeft(2, '0')}',
-                          style: const TextStyle(fontSize: 12),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              '${sale.createdAt.day}/${sale.createdAt.month} - ${sale.createdAt.hour}:${sale.createdAt.minute.toString().padLeft(2, '0')}',
+                              style: const TextStyle(fontSize: 12),
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.undo, color: Colors.red),
+                              tooltip: 'إرجاع البيع',
+                              onPressed: () => _returnSale(sale),
+                            ),
+                          ],
                         ),
                       ),
                     );
