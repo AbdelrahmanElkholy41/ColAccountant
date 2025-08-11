@@ -34,7 +34,7 @@ class ProductModel {
   Map<String, dynamic> toMap() {
     return {
       // لا ترسل id مطلقاً
-      'Name': name,
+      'name': name,
       'Count': count,
       'Price': price,
       'Image': imageUrl,
